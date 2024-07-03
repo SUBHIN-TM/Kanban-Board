@@ -1,9 +1,47 @@
-import React from 'react'
+import { Button, TextField, Container, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    interface InputData{
+        email:string;
+        password:string;
+    }
+    const [inputData,setInputData]=useState<InputData>({
+        email:'',
+        password:''
+    })
+    
+    const navigate=useNavigate()
+    console.log(inputData.email ,"\n", inputData.password);
+    const inputsGetting =(e:React.ChangeEvent<HTMLInputElement>)=>{
+      const {name,value}=e.target;
+      setInputData((pvs)=>({
+        ...pvs,
+        [name]:value
+      }))
+    }
+    
   return (
-    <div>Login</div>
-  )
-}
+    <div className='loginDiv flex items-center justify-center h-screen'>
+         <Container maxWidth="sm" className='border-2 border-black rounded-lg p-14'>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Login
+      </Typography>
+      <form>
+        <TextField label="Email" autoComplete='current-name' type="email" fullWidth margin="normal" onChange={inputsGetting} name='email' value={inputData.email}/>
+        <small className='text-red-500 m-2'>Invalid Email</small>
+        <TextField autoComplete="current-password" label="Password" type="password" fullWidth margin="normal" name='password' onChange={inputsGetting} value={inputData.password}  />
+        <small className='text-red-500 m-2'>Incorrect Password </small>
+        <Button style={{marginTop:'10px'}} variant="contained" color="primary" fullWidth className='mt-3'>
+          Login
+        </Button>
+        <p onClick={()=>navigate('/register')} className='italic mt-3 cursor-pointer hover:text-blue-500 hover:underline'>Create Your Account ➡️</p>
+      </form>
+    </Container>
+    </div>
+   
+  );
+};
 
-export default Login
+export default Login;
